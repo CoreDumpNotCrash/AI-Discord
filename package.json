@@ -1,0 +1,17 @@
+{
+  "name": "ai-discord",
+  "version": "1.0.0",
+  "description": "A very cool discord AI bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "CoreDumpNotCrash",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@huggingface/inference": "^4.13.11",
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.2.3"
+  }
+}
