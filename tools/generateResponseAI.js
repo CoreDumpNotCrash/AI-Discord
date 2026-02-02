@@ -1,14 +1,15 @@
-import { HfInference } from '@huggingface/inference';
+import { HfInference } from "@huggingface/inference";
+import log from "../core/log.js";
 
 const hf = new HfInference(process.env.HUGGING_FACE_TOKEN);
 
 async function generatePrompt(prompt, context) {
   try {
     const response = await hf.chatCompletion({
-      model: 'meta-llama/Llama-3.1-8B-Instruct',
+      model: "meta-llama/Llama-3.1-8B-Instruct",
       messages: [
         {
-          role: 'system',
+          role: "system",
           content: `
             You are discord assistant/conversation bot
 
@@ -43,27 +44,28 @@ async function generatePrompt(prompt, context) {
             Good luck.
             `,
         },
-        { role: 'user', content: prompt },
+        { role: "user", content: prompt },
       ],
       parameters: {
         max_new_tokens: 300,
         temperature: 0.7,
       },
     });
-
+    log(`Ralph: AI Response: ${response.choices[0].message.content}`);
     return response.choices[0].message.content.trim();
   } catch (error) {
-    if (error.message.includes('503')) {
-      return 'Hold on, my AI model is not ON yet. Try again in 10 seconds';
+    log(`Ralph: Error while generating response: ${error}`, 2);
+    if (error.message.includes("503")) {
+      return "Hold on, my AI model is not ON yet. Try again in 10 seconds";
     }
-    return 'Sorry pal, there\'s an error in code or smth. Try again in a secound!';
+    return "Sorry pal, there's an error in code or smth. Try again in a secound!";
   }
 }
 
 export async function askCommand(message, prompt) {
   if (!prompt) {
     return message.reply(
-      'Usage: `!ask [prompt]` \nExample: \n`!ask hello! Can you help me with maths?`',
+      "Usage: `!ask [prompt]` \nExample: \n`!ask hello! Can you help me with maths?`",
     );
   }
 
@@ -76,7 +78,7 @@ export async function askCommand(message, prompt) {
   const answer = await generatePrompt(prompt, context);
 
   if (answer.length > 2000) {
-    return message.reply(answer.substring(0, 1997) + '...');
+    return message.reply(answer.substring(0, 1997) + "...");
   }
   message.reply(answer);
 }

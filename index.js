@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import "dotenv/config";
 import { askCommand } from "./tools/generateResponseAI.js";
+import log from "./core/log.js";
 
 const client = new Client({
   intents: [
@@ -11,7 +12,7 @@ const client = new Client({
 });
 
 client.once("clientReady", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  log(`Ralph: Logged in as ${client.user.tag}!`);
 });
 
 client.on("messageCreate", async (message) => {
@@ -25,6 +26,7 @@ client.on("messageCreate", async (message) => {
   const command = args[0];
 
   if (command === "!ask") {
+    log(`Ralph: ${message.author} used !ask command, prompt: ${args.slice(1).join(" ")}`)
     await askCommand(message, args.slice(1).join(" "));
   }
 });
