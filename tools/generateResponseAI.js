@@ -54,7 +54,7 @@ async function generatePrompt(prompt, context) {
     return response.choices[0].message.content.trim();
   } catch (error) {
     if (error.message.includes('503')) {
-      return 'Gold on, my AI model is not ON yet. Try again in 10 seconds';
+      return 'Hold on, my AI model is not ON yet. Try again in 10 seconds';
     }
     return 'Sorry pal, there\'s an error in code or smth. Try again in a secound!';
   }
